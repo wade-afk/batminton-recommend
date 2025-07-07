@@ -21,23 +21,6 @@ const ResultsContainer = styled.div`
   }
 `;
 
-const ResultsHeader = styled.div`
-  text-align: center;
-  margin-bottom: 2rem;
-`;
-
-const ResultsTitle = styled.h2`
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 1rem;
-`;
-
-const ResultsSubtitle = styled.p`
-  font-size: 1.1rem;
-  color: #666;
-  margin-bottom: 2rem;
-`;
-
 const UserProfileSection = styled.div`
   background: #f8f9ff;
   border-radius: 12px;
@@ -287,20 +270,38 @@ function normalize(str) {
   return str.replace(/[^\w\d가-힣]/g, '').toLowerCase();
 }
 
+// Levenshtein 거리 계산 함수
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+      );
+    }
+  }
+  return dp[m][n];
+}
+
 function findBestFolder(racketName, indexData) {
   const norm = normalize(racketName);
-  if (indexData[norm]) return norm;
   const keys = Object.keys(indexData);
-  // 포함되는 모든 후보를 모아 가장 긴 key(가장 구체적)를 우선 사용
-  const candidates = keys.filter(k => k.includes(norm) || norm.includes(k));
-  if (candidates.length > 0) {
-    // 가장 긴 key(가장 구체적으로 일치하는 폴더) 반환
-    return candidates.reduce((a, b) => (b.length > a.length ? b : a));
+  // Levenshtein 거리로 가장 가까운 폴더 선택
+  let minDist = Infinity;
+  let bestKey = null;
+  for (const k of keys) {
+    const dist = levenshtein(norm, k);
+    if (dist < minDist) {
+      minDist = dist;
+      bestKey = k;
+    }
   }
-  // startsWith, endsWith도 시도
-  let found = keys.find(k => k.startsWith(norm) || k.endsWith(norm));
-  if (found) return found;
-  return null;
+  return bestKey;
 }
 
 function Results({ recommendations, userLabels, onRestart }) {
