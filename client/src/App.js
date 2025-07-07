@@ -37,7 +37,6 @@ const MainContent = styled.main`
 
 function App() {
   const [currentStep, setCurrentStep] = useState('survey');
-  const [surveyResponses, setSurveyResponses] = useState([]);
   const [recommendations, setRecommendations] = useState(null);
   const [userLabels, setUserLabels] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -84,7 +83,6 @@ function App() {
 
   const handleRestart = () => {
     setCurrentStep('survey');
-    setSurveyResponses([]);
     setRecommendations(null);
     setUserLabels(null);
   };
