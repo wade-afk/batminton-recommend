@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import ImageSlider from './ImageSlider';
 
 const ResultsContainer = styled.div`
   background: white;
@@ -282,6 +283,24 @@ const CompareButton = styled(Button)`
   }
 `;
 
+function normalize(str) {
+  return str.replace(/[^\w\d가-힣]/g, '').toLowerCase();
+}
+
+function findBestFolder(racketName, indexData) {
+  const norm = normalize(racketName);
+  // 완전일치 우선, 포함, startsWith, endsWith 순으로 근접 폴더 찾기
+  if (indexData[norm]) return norm;
+  const keys = Object.keys(indexData);
+  let found = keys.find(k => k.includes(norm));
+  if (found) return found;
+  found = keys.find(k => norm.includes(k));
+  if (found) return found;
+  found = keys.find(k => k.startsWith(norm) || k.endsWith(norm));
+  if (found) return found;
+  return null;
+}
+
 function Results({ recommendations, userLabels, onRestart }) {
   const getLabelDisplayName = (key) => {
     const labelNames = {
@@ -304,6 +323,15 @@ function Results({ recommendations, userLabels, onRestart }) {
     if (!features) return '특징 정보 없음';
     return features.length > 100 ? features.substring(0, 100) + '...' : features;
   };
+
+  const [imagesIndex, setImagesIndex] = React.useState(null);
+
+  React.useEffect(() => {
+    fetch('/images/index.json')
+      .then(res => res.json())
+      .then(setImagesIndex)
+      .catch(() => setImagesIndex(null));
+  }, []);
 
   return (
     <ResultsContainer>
@@ -329,46 +357,54 @@ function Results({ recommendations, userLabels, onRestart }) {
       </UserProfileSection>
 
       <RecommendationsGrid>
-        {recommendations.map((racket, index) => (
-          <RacketCard key={index}>
-            <RankBadge rank={index + 1}>{index + 1}</RankBadge>
-            
-            <RacketName>{racket['종류']}</RacketName>
-            
-            <SimilarityScore>
-              <ScoreBar>
-                <ScoreFill score={racket.similarityScore} />
-              </ScoreBar>
-              <ScoreText>{Math.round(racket.similarityScore)}%</ScoreText>
-            </SimilarityScore>
-            
-            <Price>{formatPrice(racket[' 가격 '])}</Price>
-            
-            <RacketDetails>
-              <DetailItem>
-                <DetailLabel>무게</DetailLabel>
-                <DetailValue>{racket['무게'] || '정보 없음'}</DetailValue>
-              </DetailItem>
-              <DetailItem>
-                <DetailLabel>밸런스</DetailLabel>
-                <DetailValue>{racket['밸런스 포인트'] || '정보 없음'}</DetailValue>
-              </DetailItem>
-              <DetailItem>
-                <DetailLabel>샤프트</DetailLabel>
-                <DetailValue>{racket['샤프트 유연성'] || '정보 없음'}</DetailValue>
-              </DetailItem>
-              <DetailItem>
-                <DetailLabel>출시일</DetailLabel>
-                <DetailValue>{racket['출시날짜'] || '정보 없음'}</DetailValue>
-              </DetailItem>
-            </RacketDetails>
-            
-            <Features>
-              <FeaturesTitle>주요 특징</FeaturesTitle>
-              <FeaturesText>{formatFeatures(racket['적용 소재 및 기술력'])}</FeaturesText>
-            </Features>
-          </RacketCard>
-        ))}
+        {recommendations.map((racket, index) => {
+          let images = [];
+          if (imagesIndex) {
+            const folderKey = findBestFolder(racket['종류'], imagesIndex);
+            if (folderKey) {
+              images = imagesIndex[folderKey].map(f => `/images/${f}`);
+            }
+          }
+          return (
+            <RacketCard key={index}>
+              <RankBadge rank={index + 1}>{index + 1}</RankBadge>
+              <RacketName>{racket['종류']}</RacketName>
+              <SimilarityScore>
+                <ScoreBar>
+                  <ScoreFill score={racket.similarityScore} />
+                </ScoreBar>
+                <ScoreText>{Math.round(racket.similarityScore)}%</ScoreText>
+              </SimilarityScore>
+              <Price>{formatPrice(racket[' 가격 '])}</Price>
+              <RacketDetails>
+                <DetailItem>
+                  <DetailLabel>무게</DetailLabel>
+                  <DetailValue>{racket['무게'] || '정보 없음'}</DetailValue>
+                </DetailItem>
+                <DetailItem>
+                  <DetailLabel>밸런스</DetailLabel>
+                  <DetailValue>{racket['밸런스 포인트'] || '정보 없음'}</DetailValue>
+                </DetailItem>
+                <DetailItem>
+                  <DetailLabel>샤프트</DetailLabel>
+                  <DetailValue>{racket['샤프트 유연성'] || '정보 없음'}</DetailValue>
+                </DetailItem>
+                <DetailItem>
+                  <DetailLabel>출시일</DetailLabel>
+                  <DetailValue>{racket['출시날짜'] || '정보 없음'}</DetailValue>
+                </DetailItem>
+              </RacketDetails>
+              <Features>
+                <FeaturesTitle>주요 특징</FeaturesTitle>
+                <FeaturesText>{formatFeatures(racket['적용 소재 및 기술력'])}</FeaturesText>
+              </Features>
+              {/* 이미지 슬라이더 */}
+              {images.length > 0 && (
+                <ImageSlider images={images} alt={racket['종류']} />
+              )}
+            </RacketCard>
+          );
+        })}
       </RecommendationsGrid>
 
       <ActionButtons>
