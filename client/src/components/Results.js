@@ -8,6 +8,13 @@ const ResultsContainer = styled.div`
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   max-width: 1200px;
   margin: 0 auto;
+
+  @media (max-width: 600px) {
+    max-width: 100%;
+    padding: 0.5rem;
+    margin: 0;
+    border-radius: 0;
+  }
 `;
 
 const ResultsHeader = styled.div`
