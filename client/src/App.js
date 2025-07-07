@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Survey from './components/Survey';
 import Results from './components/Results';
+import LandingPage from './components/LandingPage';
 import { getRecommendations } from './utils/recommendationEngine';
 
 const AppContainer = styled.div`
@@ -36,7 +37,7 @@ const MainContent = styled.main`
 `;
 
 function App() {
-  const [currentStep, setCurrentStep] = useState('survey');
+  const [currentStep, setCurrentStep] = useState('landing');
   const [recommendations, setRecommendations] = useState(null);
   const [userLabels, setUserLabels] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -82,9 +83,13 @@ function App() {
   };
 
   const handleRestart = () => {
-    setCurrentStep('survey');
+    setCurrentStep('landing');
     setRecommendations(null);
     setUserLabels(null);
+  };
+
+  const handleStart = () => {
+    setCurrentStep('survey');
   };
 
   return (
@@ -95,13 +100,15 @@ function App() {
       </Header>
       
       <MainContent>
+        {currentStep === 'landing' && (
+          <LandingPage onStart={handleStart} />
+        )}
         {currentStep === 'survey' && (
           <Survey 
             onComplete={handleSurveyComplete}
             loading={loading}
           />
         )}
-        
         {currentStep === 'results' && recommendations && (
           <Results 
             recommendations={recommendations}
