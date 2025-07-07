@@ -295,21 +295,43 @@ function findBestFolder(racketName, indexData) {
   const norm = normalize(racketName);
   const keys = Object.keys(indexData);
   
-  // 1. 정확한 매칭 먼저 시도
+  // 1. 정확한 매칭 먼저 시도 (정규화된 키와 비교)
   for (const k of keys) {
     if (norm === k) {
       return k;
     }
   }
   
-  // 2. 부분 매칭 시도 (포함 관계)
+  // 2. 실제 폴더명과 매칭 시도 (첫 번째 이미지 경로에서 폴더명 추출)
+  for (const k of keys) {
+    if (indexData[k] && indexData[k].length > 0) {
+      const folderName = indexData[k][0].split('/')[0]; // "ARCSABER 7 PRO/1.png" -> "ARCSABER 7 PRO"
+      const normalizedFolderName = normalize(folderName);
+      if (norm === normalizedFolderName) {
+        return k;
+      }
+    }
+  }
+  
+  // 3. 부분 매칭 시도 (포함 관계)
   for (const k of keys) {
     if (norm.includes(k) || k.includes(norm)) {
       return k;
     }
   }
   
-  // 3. Levenshtein 거리로 가장 가까운 폴더 선택
+  // 4. 실제 폴더명과 부분 매칭 시도
+  for (const k of keys) {
+    if (indexData[k] && indexData[k].length > 0) {
+      const folderName = indexData[k][0].split('/')[0];
+      const normalizedFolderName = normalize(folderName);
+      if (norm.includes(normalizedFolderName) || normalizedFolderName.includes(norm)) {
+        return k;
+      }
+    }
+  }
+  
+  // 5. Levenshtein 거리로 가장 가까운 폴더 선택
   let minDist = Infinity;
   let bestKey = null;
   for (const k of keys) {
@@ -320,8 +342,8 @@ function findBestFolder(racketName, indexData) {
     }
   }
   
-  // 거리가 너무 크면 매칭하지 않음 (임계값: 5)
-  return minDist <= 5 ? bestKey : null;
+  // 거리가 너무 크면 매칭하지 않음 (임계값: 8로 증가)
+  return minDist <= 8 ? bestKey : null;
 }
 
 function Results({ recommendations, userLabels, onRestart }) {
@@ -381,9 +403,9 @@ function Results({ recommendations, userLabels, onRestart }) {
             const folderKey = findBestFolder(racket['종류'], imagesIndex);
             if (folderKey) {
               images = imagesIndex[folderKey].map(f => `/images/${f}`);
-              console.log(`매칭 성공: ${racket['종류']} -> ${folderKey}`);
+              console.log(`매칭 성공: ${racket['종류']} -> ${folderKey} (${images.length}개 이미지)`);
             } else {
-              console.log(`매칭 실패: ${racket['종류']}`);
+              console.log(`매칭 실패: ${racket['종류']} (정규화: ${normalize(racket['종류'])})`);
             }
           }
           return (
