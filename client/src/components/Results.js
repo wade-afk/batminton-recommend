@@ -267,7 +267,10 @@ const CompareButton = styled(Button)`
 `;
 
 function normalize(str) {
-  return str.replace(/[^\w\d가-힣]/g, '').toLowerCase();
+  return str
+    .replace(/[^\w\d가-힣]/g, '') // 특수문자 제거
+    .replace(/\s+/g, '') // 공백 제거
+    .toLowerCase();
 }
 
 // Levenshtein 거리 계산 함수
@@ -291,7 +294,22 @@ function levenshtein(a, b) {
 function findBestFolder(racketName, indexData) {
   const norm = normalize(racketName);
   const keys = Object.keys(indexData);
-  // Levenshtein 거리로 가장 가까운 폴더 선택
+  
+  // 1. 정확한 매칭 먼저 시도
+  for (const k of keys) {
+    if (norm === k) {
+      return k;
+    }
+  }
+  
+  // 2. 부분 매칭 시도 (포함 관계)
+  for (const k of keys) {
+    if (norm.includes(k) || k.includes(norm)) {
+      return k;
+    }
+  }
+  
+  // 3. Levenshtein 거리로 가장 가까운 폴더 선택
   let minDist = Infinity;
   let bestKey = null;
   for (const k of keys) {
@@ -301,7 +319,9 @@ function findBestFolder(racketName, indexData) {
       bestKey = k;
     }
   }
-  return bestKey;
+  
+  // 거리가 너무 크면 매칭하지 않음 (임계값: 5)
+  return minDist <= 5 ? bestKey : null;
 }
 
 function Results({ recommendations, userLabels, onRestart }) {
@@ -361,6 +381,9 @@ function Results({ recommendations, userLabels, onRestart }) {
             const folderKey = findBestFolder(racket['종류'], imagesIndex);
             if (folderKey) {
               images = imagesIndex[folderKey].map(f => `/images/${f}`);
+              console.log(`매칭 성공: ${racket['종류']} -> ${folderKey}`);
+            } else {
+              console.log(`매칭 실패: ${racket['종류']}`);
             }
           }
           return (
