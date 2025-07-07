@@ -6,13 +6,13 @@ const ResultsContainer = styled.div`
   border-radius: 20px;
   padding: 2rem;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  max-width: 1200px;
+  max-width: 100vw;
   margin: 0 auto;
   width: 100%;
+  overflow-x: auto;
 
   @media (max-width: 900px) {
     padding: 1rem;
-    max-width: 100vw;
   }
   @media (max-width: 600px) {
     padding: 0.5rem;
@@ -78,7 +78,7 @@ const LabelValue = styled.div`
 
 const RecommendationsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   gap: 2rem;
   margin-bottom: 2rem;
   width: 100%;
@@ -102,9 +102,8 @@ const RacketCard = styled.div`
   position: relative;
   overflow: hidden;
   width: 100%;
-  min-width: 0;
-  word-break: keep-all;
   box-sizing: border-box;
+  word-break: break-all;
 
   @media (max-width: 900px) {
     padding: 1rem;
