@@ -8,18 +8,7 @@ const ResultsContainer = styled.div`
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   max-width: 1200px;
   margin: 0 auto;
-
-  @media (max-width: 600px) {
-    max-width: 100vw;
-    width: 100vw;
-    min-width: 100vw;
-    padding: 0.5rem 0;
-    margin: 0;
-    border-radius: 0;
-    left: 0;
-    right: 0;
-    position: relative;
-  }
+  width: 100%;
 `;
 
 const ResultsHeader = styled.div`

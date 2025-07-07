@@ -30,16 +30,10 @@ const Subtitle = styled.p`
 `;
 
 const MainContent = styled.main`
-  max-width: 1200px;
+  max-width: 600px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
-
-  @media (max-width: 600px) {
-    max-width: 100vw;
-    width: 100vw;
-    min-width: 100vw;
-    padding: 0;
-  }
+  padding: 0 1rem;
 `;
 
 function App() {
