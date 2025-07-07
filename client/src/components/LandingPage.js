@@ -111,6 +111,9 @@ export default function LandingPage({ onStart }) {
       .then(res => res.json())
       .then(data => {
         setVisitorCount(data.value);
+      })
+      .catch(() => {
+        setVisitorCount(82267); // 기본값 fallback
       });
   }, []);
 
