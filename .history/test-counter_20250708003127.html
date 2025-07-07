@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방문자 카운트 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f5f5f5;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .count {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3578e5;
+            margin: 1rem 0;
+        }
+        button {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        button:hover {
+            background: #3578e5;
+        }
+        .status {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>방문자 카운트 테스트</h2>
+        <div class="count" id="counter">로딩 중...</div>
+        <button onclick="updateCount()">카운트 업데이트</button>
+        <button onclick="testAPI()">API 테스트</button>
+        <div class="status" id="status"></div>
+    </div>
+
+    <script>
+        function updateCount() {
+            fetch('/api/simple-counter')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('counter').textContent = data.count.toLocaleString();
+                    document.getElementById('status').textContent = 
+                        `성공! 타임스탬프: ${new Date(data.timestamp).toLocaleString()}`;
+                })
+                .catch(error => {
+                    document.getElementById('status').textContent = `에러: ${error.message}`;
+                });
+        }
+
+        function testAPI() {
+            document.getElementById('status').textContent = 'API 테스트 중...';
+            
+            Promise.all([
+                fetch('/api/simple-counter'),
+                fetch('/api/simple-counter'),
+                fetch('/api/simple-counter')
+            ])
+            .then(responses => Promise.all(responses.map(r => r.json())))
+            .then(results => {
+                const counts = results.map(r => r.count);
+                document.getElementById('status').textContent = 
+                    `3번 테스트 결과: ${counts.join(', ')} (모두 다른 값이어야 함)`;
+            })
+            .catch(error => {
+                document.getElementById('status').textContent = `테스트 에러: ${error.message}`;
+            });
+        }
+
+        // 페이지 로드 시 자동으로 카운트 업데이트
+        updateCount();
+    </script>
+</body>
+</html> 

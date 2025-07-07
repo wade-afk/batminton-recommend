@@ -1,0 +1,8 @@
+name = "visitor-counter"
+main = "workers/visitor-counter.js"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "visitor-counter-db"
+database_id = "YOUR_DATABASE_ID" # Cloudflare 대시보드에서 확인 후 교체 

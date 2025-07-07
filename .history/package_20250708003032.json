@@ -1,0 +1,14 @@
+{
+  "name": "badminton-recommend",
+  "version": "1.0.0",
+  "description": "Badminton racket recommendation service",
+  "scripts": {
+    "dev": "wrangler pages dev client --compatibility-date=2024-01-01",
+    "deploy": "wrangler pages deploy client",
+    "kv:list": "wrangler kv:key list --binding=VISITOR_COUNT",
+    "kv:get": "wrangler kv:key get --binding=VISITOR_COUNT visitor_count"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+} 

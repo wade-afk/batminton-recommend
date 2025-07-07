@@ -1,0 +1,12 @@
+name = "badminton-recommend"
+compatibility_date = "2024-01-01"
+
+[env.production]
+name = "badminton-recommend"
+
+[env.production.kv_namespaces]
+binding = "VISITOR_COUNT"
+id = "YOUR_KV_ID_HERE" # 실제 KV ID로 교체하세요
+
+[env.production.vars]
+ENVIRONMENT = "production" 

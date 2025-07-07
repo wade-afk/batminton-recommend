@@ -47,20 +47,20 @@ const ShareTitle = styled.div`
 
 const ShareRow = styled.div`
   display: flex;
-  gap: 2.5rem;
+  gap: 1.5rem;
   margin-bottom: 2rem;
 `;
 
 const ShareCircle = styled.button`
-  width: 70px;
-  height: 70px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   transition: box-shadow 0.2s;
-  font-size: 2.1rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: #fff;
   text-decoration: none;
@@ -74,13 +74,13 @@ const ShareCircle = styled.button`
 `;
 
 const URLButton = styled.button`
-  width: 70px;
-  height: 70px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   background: #6c63ff;
   color: #fff;
   font-weight: bold;
-  font-size: 2.1rem;
+  font-size: 1.8rem;
   border: none;
   display: flex;
   align-items: center;
@@ -138,7 +138,7 @@ export default function LandingPage({ onStart }) {
           bg="#ffe812"
           onClick={() => window.open(kakaoLink, '_blank')}
         >
-          <img src={KAKAO_IMG} alt="카카오톡" style={{width:48, height:48, borderRadius:'50%'}} />
+          <img src={KAKAO_IMG} alt="카카오톡" style={{width:36, height:36, borderRadius:'50%'}} />
         </ShareCircle>
         {/* 페이스북 */}
         <ShareCircle
@@ -146,7 +146,7 @@ export default function LandingPage({ onStart }) {
           bg="#3b5998"
           onClick={() => window.open(facebookLink, '_blank')}
         >
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="16" cy="16" r="16" fill="#3b5998"/>
             <text x="16" y="23" textAnchor="middle" fontWeight="bold" fontSize="20" fill="#fff" fontFamily="Arial">f</text>
           </svg>
@@ -157,7 +157,7 @@ export default function LandingPage({ onStart }) {
           bg="#1da1f2"
           onClick={() => window.open(twitterLink, '_blank')}
         >
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="16" cy="16" r="16" fill="#1da1f2"/>
             <path d="M29 10.5c-.6.3-1.2.5-1.9.6.7-.4 1.2-1 1.5-1.7-.7.4-1.4.7-2.2.9-.7-.7-1.7-1.2-2.7-1.2-2.1 0-3.7 2-3.2 4-3-.1-5.7-1.6-7.5-3.8-.3.5-.5 1-.5 1.6 0 1.1.6 2.1 1.5 2.7-.6 0-1.1-.2-1.6-.4v.1c0 1.5 1.1 2.7 2.5 3-.3.1-.6.2-.9.2-.2 0-.4 0-.6-.1.4 1.2 1.6 2.1 3 2.1-1.1.9-2.5 1.4-4 1.4-.3 0-.6 0-.9-.1 1.4.9 3.1 1.5 4.9 1.5 5.9 0 9.1-4.9 9.1-9.1v-.4c.6-.4 1.1-1 1.5-1.6z" fill="#fff"/>
           </svg>
