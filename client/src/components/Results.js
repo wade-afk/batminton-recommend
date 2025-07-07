@@ -8,7 +8,13 @@ const ResultsContainer = styled.div`
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   max-width: 1200px;
   margin: 0 auto;
-  width: 100%;
+
+  @media (max-width: 600px) {
+    max-width: 100%;
+    padding: 0.5rem;
+    margin: 0;
+    border-radius: 0;
+  }
 `;
 
 const ResultsHeader = styled.div`
@@ -73,10 +79,12 @@ const RecommendationsGrid = styled.div`
   gap: 2rem;
   margin-bottom: 2rem;
   width: 100%;
+  min-width: 0;
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
     gap: 1rem;
+    min-width: 0;
   }
 `;
 
@@ -89,6 +97,8 @@ const RacketCard = styled.div`
   position: relative;
   overflow: hidden;
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 
   &:hover {
     border-color: #667eea;
