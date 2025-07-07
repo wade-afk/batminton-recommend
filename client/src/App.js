@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Survey from './components/Survey';
 import Results from './components/Results';
-import axios from 'axios';
+import { getRecommendations } from './utils/recommendationEngine';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -41,19 +41,41 @@ function App() {
   const [recommendations, setRecommendations] = useState(null);
   const [userLabels, setUserLabels] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [surveyMapping, setSurveyMapping] = useState([]);
+  const [racketData, setRacketData] = useState([]);
+
+  // 데이터 로드
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [surveyMappingRes, racketDataRes] = await Promise.all([
+          fetch('/data/survey-mapping.json'),
+          fetch('/data/rackets.json')
+        ]);
+        
+        const surveyMappingData = await surveyMappingRes.json();
+        const racketDataData = await racketDataRes.json();
+        
+        setSurveyMapping(surveyMappingData);
+        setRacketData(racketDataData);
+      } catch (error) {
+        console.error('데이터 로드 중 오류:', error);
+      }
+    };
+    
+    loadData();
+  }, []);
 
   const handleSurveyComplete = async (responses) => {
     setLoading(true);
     try {
-      const response = await axios.post('/api/recommend', {
-        surveyResponses: responses
-      });
+      const result = getRecommendations(responses, surveyMapping, racketData);
       
-      setRecommendations(response.data.recommendations);
-      setUserLabels(response.data.userLabels);
+      setRecommendations(result.recommendations);
+      setUserLabels(result.userLabels);
       setCurrentStep('results');
     } catch (error) {
-      console.error('추천 요청 중 오류:', error);
+      console.error('추천 처리 중 오류:', error);
       alert('추천을 받는 중 오류가 발생했습니다. 다시 시도해주세요.');
     } finally {
       setLoading(false);

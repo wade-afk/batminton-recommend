@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 
 const SurveyContainer = styled.div`
   background: white;
@@ -175,19 +174,63 @@ const LoadingText = styled.div`
 function Survey({ onComplete, loading }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [responses, setResponses] = useState([]);
-  const [questions, setQuestions] = useState([]);
-
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const response = await axios.get('/api/survey-questions');
-        setQuestions(response.data);
-      } catch (error) {
-        console.error('질문 로드 중 오류:', error);
-      }
-    };
-    fetchQuestions();
-  }, []);
+  const [questions] = useState([
+    {
+      id: 1,
+      question: "어떤 샷을 가장 즐겨 사용하나요?",
+      options: ["스매시 (강하게 공격)", "드라이브 (빠르게 툭툭 치기)", "리시브 (상대 공격 받아치기)", "클리어 (멀리 띄워서 거리 유지)"]
+    },
+    {
+      id: 2,
+      question: "경기 중 어떤 위치를 선호하나요?",
+      options: ["전위(네트 근처)", "후위(코트 뒤쪽에서 스매시/클리어)", "상황에 따라 자유롭게 움직임"]
+    },
+    {
+      id: 3,
+      question: "복식 시 주로 맡는 역할은?",
+      options: ["공격수 (후위 스매시 담당)", "수비수 (전위, 빠른 반응 중심)", "올라운드 (상황에 따라 바뀜)"]
+    },
+    {
+      id: 4,
+      question: "라켓의 어떤 특성을 중요하게 생각하나요?",
+      options: ["가볍고 빠르게 움직이는 라켓", "묵직하고 강하게 때릴 수 있는 라켓", "컨트롤이 잘 되는 밸런스 좋은 라켓"]
+    },
+    {
+      id: 5,
+      question: "스윙 속도는 어떤 편인가요?",
+      options: ["빠른 편이에요 (민첩하게 대응 가능)", "천천히 정확하게 휘둘러요", "상황에 따라 다르게 움직여요"]
+    },
+    {
+      id: 6,
+      question: "손목 힘은 어떤 편인가요?",
+      options: ["강한 편이에요 (묵직한 라켓도 문제없음)", "중간이에요", "약한 편이에요 (무거운 라켓은 부담됨)"]
+    },
+    {
+      id: 7,
+      question: "라켓의 반발력(스매시 시 반동)은 어느 정도가 좋으신가요?",
+      options: ["강한 반발력 (단단한 샤프트)", "부드러운 반발력 (유연한 샤프트)", "상관없음"]
+    },
+    {
+      id: 8,
+      question: "라켓 무게는 어떤 쪽이 편하신가요?",
+      options: ["3U (무겁지만 파워 있음)", "4U (중간 무게)", "5U (가볍고 반응 빠름)"]
+    },
+    {
+      id: 9,
+      question: "지금까지 사용해본 라켓 중 가장 마음에 들었던 건 어떤 느낌이었나요?",
+      options: ["스매시가 잘 나갔다", "손목이 편했다", "전체적으로 밸런스가 좋았다"]
+    },
+    {
+      id: 10,
+      question: "배드민턴을 얼마나 자주 치시나요?",
+      options: ["일주일에 1회 이하", "주 2~3회", "거의 매일"]
+    },
+    {
+      id: 11,
+      question: "현재 자신이 생각하는 실력은?",
+      options: ["입문자", "초급 (기본기 있음)", "중급 (경기 가능)", "상급 (클럽/대회 경험 있음)"]
+    }
+  ]);
 
   const handleOptionSelect = (option) => {
     const newResponses = [...responses];
