@@ -394,7 +394,7 @@ function Results({ recommendations, userLabels, onRestart }) {
               </RacketDetails>
               <Features>
                 <FeaturesTitle>주요 특징</FeaturesTitle>
-                <FeaturesText>{formatFeatures(racket['적용 소재 및 기술력'])}</FeaturesText>
+                <FeaturesText>{formatFeatures(racket['특징'])}</FeaturesText>
               </Features>
               {/* 이미지 슬라이더 */}
               {images.length > 0 && (
