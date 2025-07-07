@@ -289,14 +289,16 @@ function normalize(str) {
 
 function findBestFolder(racketName, indexData) {
   const norm = normalize(racketName);
-  // 완전일치 우선, 포함, startsWith, endsWith 순으로 근접 폴더 찾기
   if (indexData[norm]) return norm;
   const keys = Object.keys(indexData);
-  let found = keys.find(k => k.includes(norm));
-  if (found) return found;
-  found = keys.find(k => norm.includes(k));
-  if (found) return found;
-  found = keys.find(k => k.startsWith(norm) || k.endsWith(norm));
+  // 포함되는 모든 후보를 모아 가장 긴 key(가장 구체적)를 우선 사용
+  const candidates = keys.filter(k => k.includes(norm) || norm.includes(k));
+  if (candidates.length > 0) {
+    // 가장 긴 key(가장 구체적으로 일치하는 폴더) 반환
+    return candidates.reduce((a, b) => (b.length > a.length ? b : a));
+  }
+  // startsWith, endsWith도 시도
+  let found = keys.find(k => k.startsWith(norm) || k.endsWith(norm));
   if (found) return found;
   return null;
 }
