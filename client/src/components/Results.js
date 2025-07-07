@@ -71,6 +71,12 @@ const RecommendationsGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
   margin-bottom: 2rem;
+  width: 100%;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 `;
 
 const RacketCard = styled.div`
@@ -81,6 +87,7 @@ const RacketCard = styled.div`
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  width: 100%;
 
   &:hover {
     border-color: #667eea;
