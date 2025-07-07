@@ -8,6 +8,16 @@ const ResultsContainer = styled.div`
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
+
+  @media (max-width: 900px) {
+    padding: 1rem;
+    max-width: 100vw;
+  }
+  @media (max-width: 600px) {
+    padding: 0.5rem;
+    border-radius: 0;
+  }
 `;
 
 const ResultsHeader = styled.div`
@@ -68,14 +78,18 @@ const LabelValue = styled.div`
 
 const RecommendationsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
   margin-bottom: 2rem;
   width: 100%;
 
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.5rem;
   }
 `;
 
@@ -88,6 +102,17 @@ const RacketCard = styled.div`
   position: relative;
   overflow: hidden;
   width: 100%;
+  min-width: 0;
+  word-break: keep-all;
+  box-sizing: border-box;
+
+  @media (max-width: 900px) {
+    padding: 1rem;
+  }
+  @media (max-width: 600px) {
+    padding: 0.7rem;
+    border-radius: 8px;
+  }
 
   &:hover {
     border-color: #667eea;
