@@ -335,10 +335,7 @@ function Results({ recommendations, userLabels, onRestart }) {
 
   return (
     <ResultsContainer>
-      <ResultsHeader>
-        {/* <ResultsTitle>🎯 당신에게 추천하는 라켓</ResultsTitle> */}
-        {/* <ResultsSubtitle>설문 결과를 바탕으로 최적의 라켓을 찾았습니다</ResultsSubtitle> */}
-      </ResultsHeader>
+
 
       <UserProfileSection>
         <UserProfileTitle>📊 당신의 배드민턴 프로필</UserProfileTitle>
