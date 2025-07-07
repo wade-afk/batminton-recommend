@@ -33,6 +33,13 @@ const MainContent = styled.main`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+
+  @media (max-width: 600px) {
+    max-width: 100vw;
+    width: 100vw;
+    min-width: 100vw;
+    padding: 0;
+  }
 `;
 
 function App() {

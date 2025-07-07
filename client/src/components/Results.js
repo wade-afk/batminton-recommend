@@ -10,10 +10,15 @@ const ResultsContainer = styled.div`
   margin: 0 auto;
 
   @media (max-width: 600px) {
-    max-width: 100%;
-    padding: 0.5rem;
+    max-width: 100vw;
+    width: 100vw;
+    min-width: 100vw;
+    padding: 0.5rem 0;
     margin: 0;
     border-radius: 0;
+    left: 0;
+    right: 0;
+    position: relative;
   }
 `;
 
