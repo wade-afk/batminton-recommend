@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Survey from './components/Survey';
 import Results from './components/Results';
@@ -9,6 +9,17 @@ const AppContainer = styled.div`
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-family: 'Noto Sans KR', sans-serif;
+`;
+
+const AdContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  text-align: center;
+  
+  @media (max-width: 768px) {
+    padding: 0.5rem 1rem;
+  }
 `;
 
 const Header = styled.header`
@@ -43,6 +54,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [surveyMapping, setSurveyMapping] = useState([]);
   const [racketData, setRacketData] = useState([]);
+  const headerAdRef = useRef(null);
+  const footerAdRef = useRef(null);
 
   // 데이터 로드
   useEffect(() => {
@@ -65,6 +78,17 @@ function App() {
     
     loadData();
   }, []);
+
+  // 광고 로드
+  useEffect(() => {
+    if (window.adsbygoogle) {
+      try {
+        window.adsbygoogle.push({});
+      } catch (e) {
+        console.error('광고 로드 중 오류:', e);
+      }
+    }
+  }, [currentStep]);
 
   const handleSurveyComplete = async (responses) => {
     setLoading(true);
@@ -99,6 +123,19 @@ function App() {
         <Subtitle>당신에게 맞는 최적의 라켓을 찾아보세요</Subtitle>
       </Header>
       
+      {/* 헤더 광고 */}
+      <AdContainer>
+        <ins 
+          ref={headerAdRef}
+          className="adsbygoogle"
+          style={{display: 'block'}}
+          data-ad-client="ca-pub-9588119791313794"
+          data-ad-slot="3666030186"
+          data-ad-format="auto"
+          data-full-width-responsive="true">
+        </ins>
+      </AdContainer>
+      
       <MainContent>
         {currentStep === 'landing' && (
           <LandingPage onStart={handleStart} />
@@ -117,6 +154,19 @@ function App() {
           />
         )}
       </MainContent>
+      
+      {/* 푸터 광고 */}
+      <AdContainer>
+        <ins 
+          ref={footerAdRef}
+          className="adsbygoogle"
+          style={{display: 'block'}}
+          data-ad-client="ca-pub-9588119791313794"
+          data-ad-slot="3666030186"
+          data-ad-format="auto"
+          data-full-width-responsive="true">
+        </ins>
+      </AdContainer>
     </AppContainer>
   );
 }

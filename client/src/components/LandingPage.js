@@ -115,14 +115,54 @@ export default function LandingPage({ onStart }) {
       .catch(() => {
         setVisitorCount(82267); // 기본값 fallback
       });
+
+    // Kakao SDK 초기화
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init('YOUR_KAKAO_APP_KEY'); // 실제 앱 키로 교체 필요
+    }
   }, []);
 
   const shareUrl = window.location.origin;
+  const shareTitle = '배드민턴 라켓 추천 설문';
+  const shareText = '설문을 통해 내게 맞는 배드민턴 라켓을 추천받아보세요!';
 
-  // 외부 링크
-  const kakaoLink = 'https://accounts.kakao.com/login/?continue=https%3A%2F%2Fsharer.kakao.com%2Fpicker%2Flink%3Fapp_key%3D6a49429ddc120e8d2c31b9fd3be3fe72%26short_key%3D751db009-67f7-4331-aec3-9c6562e369dc#login';
-  const facebookLink = 'https://www.facebook.com/share_channel/#';
-  const twitterLink = 'https://x.com/share?url=https%3A%2F%2Ftestbom.com%2Fvillain-personality-test&text=%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%B4%84%20%EB%B9%8C%EB%9F%B0%20%EC%84%B1%EA%B2%A9%20%ED%85%8C%EC%8A%A4%ED%8A%B8&hashtags=%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%B4%84%2C%EB%B9%8C%EB%9F%B0%EC%84%B1%EA%B2%A9%ED%85%8C%EC%8A%A4%ED%8A%B8';
+  // 공유 함수들
+  const shareToKakao = () => {
+    if (window.Kakao) {
+      window.Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: shareTitle,
+          description: shareText,
+          imageUrl: `${shareUrl}/badminton-og-image.png`,
+          link: {
+            mobileWebUrl: shareUrl,
+            webUrl: shareUrl,
+          },
+        },
+        buttons: [
+          {
+            title: '테스트 시작하기',
+            link: {
+              mobileWebUrl: shareUrl,
+              webUrl: shareUrl,
+            },
+          },
+        ],
+      });
+    } else {
+      // Kakao SDK가 없을 때 fallback
+      window.open(`https://story.kakao.com/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
+    }
+  };
+
+  const shareToFacebook = () => {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
+  };
+
+  const shareToTwitter = () => {
+    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}&hashtags=배드민턴,라켓추천`, '_blank', 'width=600,height=400');
+  };
 
   return (
     <Container>
@@ -136,7 +176,7 @@ export default function LandingPage({ onStart }) {
         <ShareCircle
           type="button"
           bg="#ffe812"
-          onClick={() => window.open(kakaoLink, '_blank')}
+          onClick={shareToKakao}
         >
           <img src={KAKAO_IMG} alt="카카오톡" style={{width:36, height:36, borderRadius:'50%'}} />
         </ShareCircle>
@@ -144,7 +184,7 @@ export default function LandingPage({ onStart }) {
         <ShareCircle
           type="button"
           bg="#3b5998"
-          onClick={() => window.open(facebookLink, '_blank')}
+          onClick={shareToFacebook}
         >
           <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="16" cy="16" r="16" fill="#3b5998"/>
@@ -155,7 +195,7 @@ export default function LandingPage({ onStart }) {
         <ShareCircle
           type="button"
           bg="#1da1f2"
-          onClick={() => window.open(twitterLink, '_blank')}
+          onClick={shareToTwitter}
         >
           <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="16" cy="16" r="16" fill="#1da1f2"/>

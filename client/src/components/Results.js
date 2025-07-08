@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import ImageSlider from './ImageSlider';
 
@@ -266,6 +266,19 @@ const CompareButton = styled(Button)`
   }
 `;
 
+const SideAdContainer = styled.div`
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 160px;
+  z-index: 100;
+  
+  @media (max-width: 1200px) {
+    display: none;
+  }
+`;
+
 function normalize(str) {
   return str
     .replace(/[^\w\d가-힣]/g, '') // 특수문자 제거
@@ -347,6 +360,19 @@ function findBestFolder(racketName, indexData) {
 }
 
 function Results({ recommendations, userLabels, onRestart }) {
+  const sideAdRef = useRef(null);
+
+  // 광고 로드
+  useEffect(() => {
+    if (window.adsbygoogle && sideAdRef.current) {
+      try {
+        window.adsbygoogle.push({});
+      } catch (e) {
+        console.error('광고 로드 중 오류:', e);
+      }
+    }
+  }, []);
+
   const getLabelDisplayName = (key) => {
     const labelNames = {
       PlayStyle: '플레이 스타일',
@@ -379,10 +405,22 @@ function Results({ recommendations, userLabels, onRestart }) {
   }, []);
 
   return (
-    <ResultsContainer>
+    <>
+      {/* 사이드바 광고 */}
+      <SideAdContainer>
+        <ins 
+          ref={sideAdRef}
+          className="adsbygoogle"
+          style={{display: 'block'}}
+          data-ad-client="ca-pub-9588119791313794"
+          data-ad-slot="2352948514"
+          data-ad-format="auto"
+          data-full-width-responsive="true">
+        </ins>
+      </SideAdContainer>
 
-
-      <UserProfileSection>
+      <ResultsContainer>
+        <UserProfileSection>
         <UserProfileTitle>📊 당신의 배드민턴 프로필</UserProfileTitle>
         <UserLabelsGrid>
           {Object.entries(userLabels).map(([key, value]) => (
@@ -459,6 +497,7 @@ function Results({ recommendations, userLabels, onRestart }) {
         </CompareButton>
       </ActionButtons>
     </ResultsContainer>
+    </>
   );
 }
 

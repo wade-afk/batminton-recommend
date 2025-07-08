@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 const SurveyContainer = styled.div`
@@ -171,7 +171,21 @@ const LoadingText = styled.div`
   margin-top: 1rem;
 `;
 
+const MidAdContainer = styled.div`
+  text-align: center;
+  margin: 2rem 0;
+  padding: 1rem;
+  background: #f8f9ff;
+  border-radius: 12px;
+  
+  @media (max-width: 768px) {
+    margin: 1rem 0;
+    padding: 0.5rem;
+  }
+`;
+
 function Survey({ onComplete, loading }) {
+  const midAdRef = useRef(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [responses, setResponses] = useState([]);
   const [questions] = useState([
@@ -267,6 +281,17 @@ function Survey({ onComplete, loading }) {
   const currentQ = questions[currentQuestion];
   const hasResponse = responses[currentQuestion];
 
+  // 광고 로드
+  useEffect(() => {
+    if (window.adsbygoogle && midAdRef.current) {
+      try {
+        window.adsbygoogle.push({});
+      } catch (e) {
+        console.error('광고 로드 중 오류:', e);
+      }
+    }
+  }, [currentQuestion]);
+
   if (questions.length === 0) {
     return <div>질문을 불러오는 중...</div>;
   }
@@ -303,6 +328,21 @@ function Survey({ onComplete, loading }) {
              ))}
           </OptionsContainer>
         </QuestionContainer>
+
+        {/* 본문 중간 광고 */}
+        {currentQuestion === Math.floor(questions.length / 2) && (
+          <MidAdContainer>
+            <ins 
+              ref={midAdRef}
+              className="adsbygoogle"
+              style={{display: 'block'}}
+              data-ad-client="ca-pub-9588119791313794"
+              data-ad-slot="8674814283"
+              data-ad-format="auto"
+              data-full-width-responsive="true">
+            </ins>
+          </MidAdContainer>
+        )}
 
         <NavigationContainer>
           <PrevButton 
