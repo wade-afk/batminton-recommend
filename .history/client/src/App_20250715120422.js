@@ -25,7 +25,7 @@ const AdContainer = styled.div`
   min-height: 150px; /* 광고를 위한 최소 높이 증가 */
   
   @media (min-width: 1400px) {
-    max-width: 1300px; /* 더 넓은 공간으로 확장 */
+    max-width: 1200px; /* 광고와 본문 크기를 정확히 맞춤 */
     margin: 0 auto; /* 중앙 정렬 */
   }
   

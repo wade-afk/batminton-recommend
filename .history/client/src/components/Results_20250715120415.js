@@ -14,7 +14,7 @@ const ResultsContainer = styled.div`
 
   /* 사이드바 광고가 나타날 때 본문이 겹치지 않도록 조정 */
   @media (min-width: 1400px) {
-    max-width: calc(100% - 180px); /* 사이드바 공간을 더 줄여서 광고와 정확히 맞춤 */
+    max-width: calc(100% - 200px); /* 사이드바 공간을 줄여서 더 넓게 */
     margin-right: 20px; /* 사이드바와의 간격 */
   }
 
