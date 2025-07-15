@@ -45,15 +45,9 @@ const Subtitle = styled.p`
 
 const ComparisonGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3개 라켓을 고정으로 배치 */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   margin-bottom: 2rem;
-  width: 100%;
-
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr); /* 중간 크기에서는 2개씩 */
-    gap: 1.5rem;
-  }
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
