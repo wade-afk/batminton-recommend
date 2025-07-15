@@ -10,10 +10,13 @@ const SurveyContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
   width: 100%;
+  box-sizing: border-box;
   
   @media (max-width: 768px) {
     padding: 1rem;
     border-radius: 12px;
+    margin: 0 0.5rem;
+    width: calc(100% - 1rem);
   }
 `;
 
@@ -53,6 +56,13 @@ const QuestionText = styled.h2`
   color: #333;
   margin-bottom: 2rem;
   line-height: 1.4;
+  
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
+    padding: 0 0.5rem;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
 `;
 
 const OptionsContainer = styled.div`
@@ -75,6 +85,8 @@ const OptionButton = styled.button`
   text-align: left;
   line-height: 1.4;
   position: relative;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 
   &:hover {
     border-color: #667eea;
@@ -101,6 +113,14 @@ const OptionButton = styled.button`
     top: 50%;
     transform: translateY(-50%);
     font-weight: bold;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    margin: 0 0.5rem;
+    width: calc(100% - 1rem);
+    box-sizing: border-box;
   }
 `;
 

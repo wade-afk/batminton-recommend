@@ -10,6 +10,7 @@ const SelectorContainer = styled.div`
   margin: 0 auto;
   width: 100%;
   overflow-x: auto;
+  box-sizing: border-box;
 
   /* 사이드바 광고가 나타날 때 본문이 겹치지 않도록 조정 */
   @media (min-width: 1400px) {
@@ -20,10 +21,14 @@ const SelectorContainer = styled.div`
 
   @media (max-width: 900px) {
     padding: 1rem;
+    margin: 0 0.5rem;
+    width: calc(100% - 1rem);
   }
   @media (max-width: 600px) {
     padding: 0.5rem;
     border-radius: 12px;
+    margin: 0 0.5rem;
+    width: calc(100% - 1rem);
   }
 `;
 
@@ -136,6 +141,7 @@ const RacketsGrid = styled.div`
   }
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
+    gap: 0.8rem;
   }
 `;
 
@@ -147,6 +153,8 @@ const RacketCard = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 
   &:hover {
     border-color: #667eea;
@@ -158,6 +166,12 @@ const RacketCard = styled.div`
     background: #f8f9ff;
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
   `}
+  
+  @media (max-width: 768px) {
+    margin: 0 0.5rem;
+    width: calc(100% - 1rem);
+    box-sizing: border-box;
+  }
 `;
 
 const SelectionBadge = styled.div`
@@ -181,6 +195,13 @@ const RacketName = styled.h3`
   color: #333;
   margin-bottom: 0.5rem;
   padding-right: 30px;
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    padding-right: 25px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
 `;
 
 const RacketPrice = styled.div`
