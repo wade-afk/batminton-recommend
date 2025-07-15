@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { trackUserLevel, trackRacketCategory } from '../utils/analytics';
 
 const SurveyContainer = styled.div`
   background: white;
@@ -258,6 +259,13 @@ function Survey({ onComplete, loading }) {
     const newResponses = [...responses];
     newResponses[currentQuestion] = option;
     setResponses(newResponses);
+    
+    // 특정 질문에 대한 추적
+    if (currentQuestion === 10) { // 실력 질문
+      trackUserLevel(option);
+    } else if (currentQuestion === 3) { // 라켓 특성 질문
+      trackRacketCategory(option);
+    }
     
     // 자동으로 다음 질문으로 이동
     setTimeout(() => {

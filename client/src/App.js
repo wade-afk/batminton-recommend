@@ -6,6 +6,14 @@ import LandingPage from './components/LandingPage';
 import RacketSelector from './components/RacketSelector';
 import RacketComparison from './components/RacketComparison';
 import { getRecommendations } from './utils/recommendationEngine';
+import { 
+  trackPageView, 
+  trackSessionStart, 
+  trackSurveyStart, 
+  trackSurveyComplete,
+  trackRacketCompare,
+  trackAdClick 
+} from './utils/analytics';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -81,6 +89,16 @@ function App() {
   const headerAdRef = useRef(null);
   const footerAdRef = useRef(null);
 
+  // 세션 시작 추적
+  useEffect(() => {
+    trackSessionStart();
+  }, []);
+
+  // 페이지뷰 추적
+  useEffect(() => {
+    trackPageView(`Step: ${currentStep}`);
+  }, [currentStep]);
+
   // 데이터 로드
   useEffect(() => {
     const loadData = async () => {
@@ -105,19 +123,30 @@ function App() {
 
   // 광고 로드
   useEffect(() => {
-    if (window.adsbygoogle) {
-      try {
-        window.adsbygoogle.push({});
-      } catch (e) {
-        console.error('광고 로드 중 오류:', e);
+    const loadAds = () => {
+      if (window.adsbygoogle) {
+        try {
+          window.adsbygoogle.push({});
+        } catch (e) {
+          console.warn('광고 로드 중 오류 (정상적인 상황입니다):', e);
+        }
       }
-    }
+    };
+
+    // 약간의 지연 후 광고 로드 시도
+    const timer = setTimeout(loadAds, 1000);
+    return () => clearTimeout(timer);
   }, [currentStep]);
 
   const handleSurveyComplete = async (responses) => {
     setLoading(true);
     try {
       const result = getRecommendations(responses, surveyMapping, racketData);
+      
+      // 설문 완료 추적
+      const userLevel = result.userLabels?.level || 'unknown';
+      const racketCategory = result.userLabels?.category || 'unknown';
+      trackSurveyComplete(userLevel, racketCategory);
       
       setRecommendations(result.recommendations);
       setUserLabels(result.userLabels);
@@ -138,10 +167,12 @@ function App() {
   };
 
   const handleStart = () => {
+    trackSurveyStart();
     setCurrentStep('survey');
   };
 
   const handleCompareRackets = () => {
+    trackRacketCompare(3); // 기본적으로 3개 라켓 비교
     setCurrentStep('selector');
   };
 
@@ -184,7 +215,8 @@ function App() {
           data-ad-client="ca-pub-9588119791313794"
           data-ad-slot="3666030186"
           data-ad-format="auto"
-          data-full-width-responsive="true">
+          data-full-width-responsive="true"
+          onClick={() => trackAdClick('header')}>
         </ins>
       </AdContainer>
       

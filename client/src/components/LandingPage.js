@@ -75,7 +75,7 @@ const ShareCircle = styled.button`
   font-weight: bold;
   color: #fff;
   text-decoration: none;
-  background: ${({bg}) => bg};
+  background: ${({$bg}) => $bg};
   border: none;
   cursor: pointer;
   &:hover {
@@ -113,20 +113,10 @@ const CopiedMsg = styled.div`
 const KAKAO_IMG = process.env.PUBLIC_URL + '/kakao.webp';
 
 export default function LandingPage({ onStart }) {
-  const [visitorCount, setVisitorCount] = useState(null);
+  const [visitorCount, setVisitorCount] = useState(76267); // 기본값으로 설정
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    // countapi.xyz로 방문자 수 카운트
-    fetch('https://api.countapi.xyz/hit/badminton-recommend/visits')
-      .then(res => res.json())
-      .then(data => {
-        setVisitorCount(data.value);
-      })
-      .catch(() => {
-        setVisitorCount(76267); // 기본값 fallback
-      });
-
     // Kakao SDK 초기화
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init('b53d7f165df12a356594e4ffe8ba060f');
@@ -186,7 +176,7 @@ export default function LandingPage({ onStart }) {
         {/* 카카오톡 */}
         <ShareCircle
           type="button"
-          bg="#ffe812"
+          $bg="#ffe812"
           onClick={shareToKakao}
         >
           <img src={KAKAO_IMG} alt="카카오톡" style={{width:36, height:36, borderRadius:'50%'}} />
@@ -194,7 +184,7 @@ export default function LandingPage({ onStart }) {
         {/* 페이스북 */}
         <ShareCircle
           type="button"
-          bg="#3b5998"
+          $bg="#3b5998"
           onClick={shareToFacebook}
         >
           <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -205,7 +195,7 @@ export default function LandingPage({ onStart }) {
         {/* 트위터 */}
         <ShareCircle
           type="button"
-          bg="#1da1f2"
+          $bg="#1da1f2"
           onClick={shareToTwitter}
         >
           <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
