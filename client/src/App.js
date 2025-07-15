@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Survey from './components/Survey';
 import Results from './components/Results';
 import LandingPage from './components/LandingPage';
+import RacketSelector from './components/RacketSelector';
+import RacketComparison from './components/RacketComparison';
 import { getRecommendations } from './utils/recommendationEngine';
 
 const AppContainer = styled.div`
@@ -54,6 +56,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [surveyMapping, setSurveyMapping] = useState([]);
   const [racketData, setRacketData] = useState([]);
+  const [selectedRackets, setSelectedRackets] = useState([]);
   const headerAdRef = useRef(null);
   const footerAdRef = useRef(null);
 
@@ -110,10 +113,32 @@ function App() {
     setCurrentStep('landing');
     setRecommendations(null);
     setUserLabels(null);
+    setSelectedRackets([]);
   };
 
   const handleStart = () => {
     setCurrentStep('survey');
+  };
+
+  const handleCompareRackets = () => {
+    setCurrentStep('selector');
+  };
+
+  const handleRacketSelection = (rackets) => {
+    setSelectedRackets(rackets);
+    setCurrentStep('comparison');
+  };
+
+  const handleBackFromSelector = () => {
+    setCurrentStep('results');
+  };
+
+  const handleBackFromComparison = () => {
+    setCurrentStep('selector');
+  };
+
+  const handleSelectMoreRackets = () => {
+    setCurrentStep('selector');
   };
 
   return (
@@ -151,6 +176,20 @@ function App() {
             recommendations={recommendations}
             userLabels={userLabels}
             onRestart={handleRestart}
+            onCompare={handleCompareRackets}
+          />
+        )}
+        {currentStep === 'selector' && (
+          <RacketSelector
+            onCompare={handleRacketSelection}
+            onBack={handleBackFromSelector}
+          />
+        )}
+        {currentStep === 'comparison' && (
+          <RacketComparison
+            selectedRackets={selectedRackets}
+            onBack={handleBackFromComparison}
+            onSelectMore={handleSelectMoreRackets}
           />
         )}
       </MainContent>

@@ -359,7 +359,7 @@ function findBestFolder(racketName, indexData) {
   return minDist <= 8 ? bestKey : null;
 }
 
-function Results({ recommendations, userLabels, onRestart }) {
+function Results({ recommendations, userLabels, onRestart, onCompare }) {
   const sideAdRef = useRef(null);
 
   // 광고 로드
@@ -456,7 +456,7 @@ function Results({ recommendations, userLabels, onRestart }) {
                 </ScoreBar>
                 <ScoreText>{Math.round(racket.similarityScore)}%</ScoreText>
               </SimilarityScore>
-              <Price>{formatPrice(racket[' 가격 '])}</Price>
+              <Price>{formatPrice(racket['가격'])}</Price>
               <RacketDetails>
                 <DetailItem>
                   <DetailLabel>무게</DetailLabel>
@@ -492,7 +492,7 @@ function Results({ recommendations, userLabels, onRestart }) {
         <RestartButton onClick={onRestart}>
           🔄 다시 추천받기
         </RestartButton>
-        <CompareButton onClick={() => alert('비교 기능은 추후 업데이트 예정입니다!')}>
+        <CompareButton onClick={onCompare}>
           ⚖️ 라켓 비교하기
         </CompareButton>
       </ActionButtons>

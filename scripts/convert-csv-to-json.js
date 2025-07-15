@@ -1,55 +1,57 @@
 const fs = require('fs');
-const csv = require('csv-parser');
 const path = require('path');
 
-// 설문 매핑 데이터를 JSON으로 변환
-function convertSurveyMapping() {
-  const results = [];
-  
-  fs.createReadStream(path.join(__dirname, '../배드민턴_성향_설문_라벨_매핑표.csv'))
-    .pipe(csv())
-    .on('data', (row) => {
-      results.push(row);
-    })
-    .on('end', () => {
-      const outputPath = path.join(__dirname, '../client/public/data/survey-mapping.json');
-      
-      // 디렉토리가 없으면 생성
-      const dir = path.dirname(outputPath);
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-      }
-      
-      fs.writeFileSync(outputPath, JSON.stringify(results, null, 2));
-      console.log('설문 매핑 데이터가 JSON으로 변환되었습니다:', outputPath);
-    });
-}
+// CSV 파일 읽기
+const csvPath = path.join(__dirname, '../요넥스 라켓비교.csv');
+const outputPath = path.join(__dirname, '../client/public/data/rackets.json');
 
-// 라켓 데이터를 JSON으로 변환
-function convertRacketData() {
-  const results = [];
+try {
+  const csvContent = fs.readFileSync(csvPath, 'utf8');
+  const lines = csvContent.split('\n');
   
-  fs.createReadStream(path.join(__dirname, '../요넥스 라켓비교.csv'))
-    .pipe(csv())
-    .on('data', (row) => {
-      if (row['종류'] && row['종류'].trim() !== '') {
-        results.push(row);
-      }
-    })
-    .on('end', () => {
-      const outputPath = path.join(__dirname, '../client/public/data/rackets.json');
+  // 헤더 추출
+  const headers = lines[0].split(',').map(h => h.trim());
+  
+  // 데이터 파싱
+  const rackets = [];
+  
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    
+    // 쉼표로 분할하되, 따옴표 안의 쉼표는 무시
+    const values = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let j = 0; j < line.length; j++) {
+      const char = line[j];
       
-      // 디렉토리가 없으면 생성
-      const dir = path.dirname(outputPath);
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        values.push(current.trim());
+        current = '';
+      } else {
+        current += char;
       }
-      
-      fs.writeFileSync(outputPath, JSON.stringify(results, null, 2));
-      console.log('라켓 데이터가 JSON으로 변환되었습니다:', outputPath);
+    }
+    values.push(current.trim()); // 마지막 값
+    
+    // 객체 생성
+    const racket = {};
+    headers.forEach((header, index) => {
+      racket[header] = values[index] || '';
     });
-}
-
-// 실행
-convertSurveyMapping();
-convertRacketData(); 
+    
+    rackets.push(racket);
+  }
+  
+  // JSON 파일로 저장
+  fs.writeFileSync(outputPath, JSON.stringify(rackets, null, 2), 'utf8');
+  
+  console.log(`✅ ${rackets.length}개의 라켓 데이터가 ${outputPath}에 저장되었습니다.`);
+  
+} catch (error) {
+  console.error('❌ 오류 발생:', error.message);
+} 
