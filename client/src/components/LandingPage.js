@@ -124,7 +124,7 @@ export default function LandingPage({ onStart }) {
         setVisitorCount(data.value);
       })
       .catch(() => {
-        setVisitorCount(82267); // 기본값 fallback
+        setVisitorCount(76267); // 기본값 fallback
       });
 
     // Kakao SDK 초기화

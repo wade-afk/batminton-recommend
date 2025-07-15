@@ -15,6 +15,7 @@ const SelectorContainer = styled.div`
   @media (min-width: 1400px) {
     max-width: calc(100% - 180px); /* 사이드바 공간을 줄여서 광고와 정확히 맞춤 */
     margin-right: 20px; /* 사이드바와의 간격 */
+    margin-left: 55px; /* 왼쪽으로 50px 조정 */
   }
 
   @media (max-width: 900px) {
@@ -120,7 +121,7 @@ const FilterButton = styled.button`
 
 const RacketsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
   width: 100%;
@@ -287,7 +288,15 @@ function RacketSelector({ onCompare, onBack }) {
       setSelectedRackets(selectedRackets.filter(r => r['종류'] !== racket['종류']));
     } else {
       if (selectedRackets.length < 3) {
-        setSelectedRackets([...selectedRackets, racket]);
+        const newSelectedRackets = [...selectedRackets, racket];
+        setSelectedRackets(newSelectedRackets);
+        
+        // 3개가 선택되면 자동으로 비교 화면으로 넘어감
+        if (newSelectedRackets.length === 3) {
+          setTimeout(() => {
+            onCompare(newSelectedRackets);
+          }, 500); // 0.5초 후 자동 이동 (선택 효과를 볼 수 있도록)
+        }
       } else {
         alert('최대 3개까지만 선택할 수 있습니다.');
       }
@@ -315,7 +324,7 @@ function RacketSelector({ onCompare, onBack }) {
   return (
     <SelectorContainer>
       <Header>
-        <Title>🏸 라켓 선택</Title>
+        <Title>🏸 라켓 선택 🏸</Title>
         <Subtitle>비교하고 싶은 라켓을 선택해주세요 (최대 3개)</Subtitle>
       </Header>
 
@@ -324,7 +333,11 @@ function RacketSelector({ onCompare, onBack }) {
           {selectedRackets.length}/3 라켓 선택됨
         </SelectionCount>
         <SelectionText>
-          {selectedRackets.length >= 2 ? '비교할 준비가 되었습니다!' : '최소 2개를 선택해주세요.'}
+          {selectedRackets.length === 3 
+            ? '3개 선택 완료! 자동으로 비교 화면으로 이동합니다...' 
+            : selectedRackets.length >= 2 
+              ? '비교할 준비가 되었습니다!' 
+              : '최소 2개를 선택해주세요.'}
         </SelectionText>
       </SelectionInfo>
 

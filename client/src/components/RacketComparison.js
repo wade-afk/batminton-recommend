@@ -16,6 +16,7 @@ const ComparisonContainer = styled.div`
   @media (min-width: 1400px) {
     max-width: calc(100% - 180px); /* 사이드바 공간을 줄여서 광고와 정확히 맞춤 */
     margin-right: 20px; /* 사이드바와의 간격 */
+    margin-left: 55px; /* 왼쪽으로 50px 조정 */
   }
 
   @media (max-width: 900px) {
@@ -325,7 +326,7 @@ function RacketComparison({ selectedRackets, onBack, onSelectMore }) {
   return (
     <ComparisonContainer>
       <Header>
-        <Title>🏸 라켓 비교</Title>
+        <Title>🏸 라켓 비교 🏸</Title>
         <Subtitle>선택한 라켓들의 상세 비교</Subtitle>
       </Header>
 
