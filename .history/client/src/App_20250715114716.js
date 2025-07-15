@@ -26,7 +26,7 @@ const AdContainer = styled.div`
   min-height: 150px; /* 광고를 위한 최소 높이 증가 */
   
   @media (min-width: 1400px) {
-    max-width: 1100px; /* 더 넓은 공간 확보 */
+    max-width: 1000px; /* 사이드바 광고 공간 확보 */
     margin: 0 auto 3rem auto; /* 재정렬 및 하단 마진 유지 */
   }
   
@@ -62,7 +62,7 @@ const MainContent = styled.main`
   padding: 0 2rem;
   
   @media (min-width: 1400px) {
-    max-width: 1100px; /* 더 넓은 공간 확보 */
+    max-width: 1000px; /* 사이드바 광고 공간 확보 */
     margin: 0 auto; /* 중앙 정렬 */
   }
   
@@ -178,9 +178,8 @@ function App() {
           style={{
             display: 'block', 
             textAlign: 'center',
-            minHeight: '120px',
-            width: '100%',
-            maxWidth: '100%'
+            minHeight: '100px',
+            width: '100%'
           }}
           data-ad-client="ca-pub-9588119791313794"
           data-ad-slot="3666030186"
@@ -230,9 +229,8 @@ function App() {
           style={{
             display: 'block', 
             textAlign: 'center',
-            minHeight: '120px',
-            width: '100%',
-            maxWidth: '100%'
+            minHeight: '100px',
+            width: '100%'
           }}
           data-ad-client="ca-pub-9588119791313794"
           data-ad-slot="3666030186"

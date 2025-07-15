@@ -23,17 +23,17 @@ const AdContainer = styled.div`
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   margin-bottom: 3rem; /* 하단 광고 마진 증가 */
   overflow: hidden;
-  min-height: 150px; /* 광고를 위한 최소 높이 증가 */
+  min-height: 120px; /* 광고를 위한 최소 높이 설정 */
   
   @media (min-width: 1400px) {
-    max-width: 1100px; /* 더 넓은 공간 확보 */
+    max-width: 1000px; /* 사이드바 광고 공간 확보 */
     margin: 0 auto 3rem auto; /* 재정렬 및 하단 마진 유지 */
   }
   
   @media (max-width: 768px) {
     padding: 1rem;
     margin: 0 1rem 1rem 1rem;
-    min-height: 120px;
+    min-height: 100px;
   }
 `;
 
@@ -62,7 +62,7 @@ const MainContent = styled.main`
   padding: 0 2rem;
   
   @media (min-width: 1400px) {
-    max-width: 1100px; /* 더 넓은 공간 확보 */
+    max-width: 1000px; /* 사이드바 광고 공간 확보 */
     margin: 0 auto; /* 중앙 정렬 */
   }
   
@@ -175,13 +175,7 @@ function App() {
         <ins 
           ref={headerAdRef}
           className="adsbygoogle"
-          style={{
-            display: 'block', 
-            textAlign: 'center',
-            minHeight: '120px',
-            width: '100%',
-            maxWidth: '100%'
-          }}
+          style={{display: 'block', textAlign: 'center'}}
           data-ad-client="ca-pub-9588119791313794"
           data-ad-slot="3666030186"
           data-ad-format="auto"
@@ -227,13 +221,7 @@ function App() {
         <ins 
           ref={footerAdRef}
           className="adsbygoogle"
-          style={{
-            display: 'block', 
-            textAlign: 'center',
-            minHeight: '120px',
-            width: '100%',
-            maxWidth: '100%'
-          }}
+          style={{display: 'block', textAlign: 'center'}}
           data-ad-client="ca-pub-9588119791313794"
           data-ad-slot="3666030186"
           data-ad-format="auto"
