@@ -21,12 +21,13 @@ const AdContainer = styled.div`
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 3rem; /* 하단 광고 마진 증가 */
   overflow: hidden;
   min-height: 150px; /* 광고를 위한 최소 높이 증가 */
   
   @media (min-width: 1400px) {
     max-width: 1200px; /* 광고와 본문 크기를 정확히 맞춤 */
-    margin: 0 auto; /* 중앙 정렬 */
+    margin: 0 auto 3rem auto; /* 재정렬 및 하단 마진 유지 */
   }
   
   @media (max-width: 768px) {
