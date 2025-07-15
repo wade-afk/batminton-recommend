@@ -6,7 +6,7 @@ const SelectorContainer = styled.div`
   border-radius: 20px;
   padding: 2rem;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  max-width: 100vw;
+  max-width: 100%;
   margin: 0 auto;
   width: 100%;
   overflow-x: auto;
@@ -16,7 +16,7 @@ const SelectorContainer = styled.div`
   }
   @media (max-width: 600px) {
     padding: 0.5rem;
-    border-radius: 0;
+    border-radius: 12px;
   }
 `;
 

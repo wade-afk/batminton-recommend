@@ -8,6 +8,12 @@ const SurveyContainer = styled.div`
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   max-width: 800px;
   margin: 0 auto;
+  width: 100%;
+  
+  @media (max-width: 768px) {
+    padding: 1rem;
+    border-radius: 12px;
+  }
 `;
 
 const ProgressBar = styled.div`
@@ -175,8 +181,10 @@ const MidAdContainer = styled.div`
   text-align: center;
   margin: 2rem 0;
   padding: 1rem;
-  background: #f8f9ff;
+  background: white;
   border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
   
   @media (max-width: 768px) {
     margin: 1rem 0;

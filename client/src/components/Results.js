@@ -7,17 +7,23 @@ const ResultsContainer = styled.div`
   border-radius: 20px;
   padding: 2rem;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  max-width: 100vw;
+  max-width: 100%;
   margin: 0 auto;
   width: 100%;
   overflow-x: auto;
+
+  /* 사이드바 광고가 나타날 때 본문이 겹치지 않도록 조정 */
+  @media (min-width: 1400px) {
+    max-width: calc(100% - 220px); /* 100%에서 사이드바 너비(160px) + 여백(60px) 제외 */
+    margin-right: 20px; /* 사이드바와의 간격 */
+  }
 
   @media (max-width: 900px) {
     padding: 1rem;
   }
   @media (max-width: 600px) {
     padding: 0.5rem;
-    border-radius: 0;
+    border-radius: 12px;
   }
 `;
 
@@ -273,9 +279,18 @@ const SideAdContainer = styled.div`
   transform: translateY(-50%);
   width: 160px;
   z-index: 100;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 8px;
+  overflow: hidden;
   
-  @media (max-width: 1200px) {
+  @media (max-width: 1400px) {
     display: none;
+  }
+  
+  @media (min-width: 1400px) {
+    right: 20px; /* 사이드바 광고의 최종 위치 조정 */
   }
 `;
 

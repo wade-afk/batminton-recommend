@@ -18,9 +18,20 @@ const AdContainer = styled.div`
   margin: 0 auto;
   padding: 1rem 2rem;
   text-align: center;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  
+  @media (min-width: 1400px) {
+    max-width: 1000px; /* 사이드바 광고 공간 확보 */
+    margin: 0 auto 2rem auto; /* 중앙 정렬 */
+  }
   
   @media (max-width: 768px) {
     padding: 0.5rem 1rem;
+    margin: 0 1rem 1rem 1rem;
   }
 `;
 
@@ -47,6 +58,15 @@ const MainContent = styled.main`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+  
+  @media (min-width: 1400px) {
+    max-width: 1000px; /* 사이드바 광고 공간 확보 */
+    margin: 0 auto; /* 중앙 정렬 */
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
 `;
 
 function App() {
@@ -150,15 +170,17 @@ function App() {
       
       {/* 헤더 광고 */}
       <AdContainer>
-        <ins 
-          ref={headerAdRef}
-          className="adsbygoogle"
-          style={{display: 'block'}}
-          data-ad-client="ca-pub-9588119791313794"
-          data-ad-slot="3666030186"
-          data-ad-format="auto"
-          data-full-width-responsive="true">
-        </ins>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <ins 
+            ref={headerAdRef}
+            className="adsbygoogle"
+            style={{display: 'block', textAlign: 'center'}}
+            data-ad-client="ca-pub-9588119791313794"
+            data-ad-slot="3666030186"
+            data-ad-format="auto"
+            data-full-width-responsive="true">
+          </ins>
+        </div>
       </AdContainer>
       
       <MainContent>
@@ -195,16 +217,18 @@ function App() {
       </MainContent>
       
       {/* 푸터 광고 */}
-      <AdContainer>
-        <ins 
-          ref={footerAdRef}
-          className="adsbygoogle"
-          style={{display: 'block'}}
-          data-ad-client="ca-pub-9588119791313794"
-          data-ad-slot="3666030186"
-          data-ad-format="auto"
-          data-full-width-responsive="true">
-        </ins>
+      <AdContainer style={{ marginBottom: '3rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <ins 
+            ref={footerAdRef}
+            className="adsbygoogle"
+            style={{display: 'block', textAlign: 'center'}}
+            data-ad-client="ca-pub-9588119791313794"
+            data-ad-slot="3666030186"
+            data-ad-format="auto"
+            data-full-width-responsive="true">
+          </ins>
+        </div>
       </AdContainer>
     </AppContainer>
   );
