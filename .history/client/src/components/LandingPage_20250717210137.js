@@ -1,0 +1,247 @@
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  max-width: 480px;
+  margin: 40px auto;
+  text-align: center;
+  padding: 2em 1em;
+  background: #f8fafe;
+  border-radius: 2em;
+  box-shadow: 0 8px 32px rgba(40,80,140,.05);
+`;
+
+const Illustration = styled.img`
+  width: 120px;
+  margin-bottom: 1.5em;
+`;
+
+const Title = styled.h1`
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: -1px;
+  margin: 0 0 1rem 0;
+`;
+
+const Description = styled.p`
+  font-size: 1.1em;
+  color: #5a5a5a;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.6;
+`;
+
+const StartButton = styled.button`
+  font-size: 1.3em;
+  padding: 0.7em 2.5em;
+  background: #25C3B0;
+  color: #fff;
+  border-radius: 1.3em;
+  border: none;
+  margin: 1.5em 0 0 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  transition: 0.2s;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+`;
+
+const ReviewSection = styled.div`
+  margin-top: 1.2em;
+  font-size: 0.98em;
+  color: #999;
+  line-height: 1.4;
+`;
+
+const VisitorCount = styled.div`
+  color: #7b7b7b;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  span {
+    color: #3578e5;
+    font-weight: bold;
+    font-size: 1.3rem;
+  }
+`;
+
+const ShareTitle = styled.div`
+  margin: 1.5rem 0 1rem 0;
+  color: #444;
+  font-size: 1.1rem;
+`;
+
+const ShareRow = styled.div`
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+`;
+
+const ShareCircle = styled.button`
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  background: ${({$bg}) => $bg};
+  border: none;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 4px 16px rgba(66,133,244,0.12);
+    filter: brightness(0.95);
+  }
+`;
+
+const URLButton = styled.button`
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: #6c63ff;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.8rem;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  &:hover {
+    box-shadow: 0 4px 16px rgba(108,99,255,0.18);
+    filter: brightness(0.95);
+  }
+`;
+
+const CopiedMsg = styled.div`
+  color: #6c63ff;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+`;
+
+const KAKAO_IMG = process.env.PUBLIC_URL + '/kakao.webp';
+
+export default function LandingPage({ onStart }) {
+  const [visitorCount] = useState(76267); // 기본값으로 설정
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    // Kakao SDK 초기화
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init('b53d7f165df12a356594e4ffe8ba060f');
+    }
+  }, []);
+
+  const shareUrl = window.location.origin;
+  const shareTitle = '배드민턴 라켓 추천 설문';
+  const shareText = '설문을 통해 내게 맞는 배드민턴 라켓을 추천받아보세요!';
+
+  // 공유 함수들
+  const shareToKakao = () => {
+    if (window.Kakao) {
+      window.Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: shareTitle,
+          description: shareText,
+          imageUrl: `${shareUrl}/badminton-og-image.png`,
+          link: {
+            mobileWebUrl: shareUrl,
+            webUrl: shareUrl,
+          },
+        },
+        buttons: [
+          {
+            title: '테스트 시작하기',
+            link: {
+              mobileWebUrl: shareUrl,
+              webUrl: shareUrl,
+            },
+          },
+        ],
+      });
+    } else {
+      // Kakao SDK가 없을 때 fallback
+      window.open(`https://story.kakao.com/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
+    }
+  };
+
+  const shareToFacebook = () => {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
+  };
+
+  const shareToTwitter = () => {
+    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}&hashtags=배드민턴,라켓추천`, '_blank', 'width=600,height=400');
+  };
+
+  return (
+    <Container>
+
+      <Description>
+        내 플레이 스타일에 딱 맞는 라켓,<br />
+        <b>3분 만에 찾아드립니다!</b><br />
+        지금 바로 시작해서 나만의 라켓을 찾아보세요.
+      </Description>
+      <StartButton onClick={onStart}>테스트 시작하기 🚀</StartButton>
+      <br>
+      <br>
+      
+      <ReviewSection>
+        <span>실제 이용자 후기 ⭐⭐⭐⭐⭐</span><br />
+        <span>"덕분에 딱 맞는 라켓 샀어요!"</span>
+      </ReviewSection>
+      
+      <VisitorCount>
+        지금까지 <span>{visitorCount !== null ? visitorCount.toLocaleString() : '...'}</span>명이 참여하였습니다.
+      </VisitorCount>
+      <ShareTitle>친구와 함께 즐기기</ShareTitle>
+      <ShareRow>
+        {/* 카카오톡 */}
+        <ShareCircle
+          type="button"
+          $bg="#ffe812"
+          onClick={shareToKakao}
+        >
+          <img src={KAKAO_IMG} alt="카카오톡" style={{width:36, height:36, borderRadius:'50%'}} />
+        </ShareCircle>
+        {/* 페이스북 */}
+        <ShareCircle
+          type="button"
+          $bg="#3b5998"
+          onClick={shareToFacebook}
+        >
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="16" fill="#3b5998"/>
+            <text x="16" y="23" textAnchor="middle" fontWeight="bold" fontSize="20" fill="#fff" fontFamily="Arial">f</text>
+          </svg>
+        </ShareCircle>
+        {/* 트위터 */}
+        <ShareCircle
+          type="button"
+          $bg="#1da1f2"
+          onClick={shareToTwitter}
+        >
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="16" fill="#1da1f2"/>
+            <path d="M29 10.5c-.6.3-1.2.5-1.9.6.7-.4 1.2-1 1.5-1.7-.7.4-1.4.7-2.2.9-.7-.7-1.7-1.2-2.7-1.2-2.1 0-3.7 2-3.2 4-3-.1-5.7-1.6-7.5-3.8-.3.5-.5 1-.5 1.6 0 1.1.6 2.1 1.5 2.7-.6 0-1.1-.2-1.6-.4v.1c0 1.5 1.1 2.7 2.5 3-.3.1-.6.2-.9.2-.2 0-.4 0-.6-.1.4 1.2 1.6 2.1 3 2.1-1.1.9-2.5 1.4-4 1.4-.3 0-.6 0-.9-.1 1.4.9 3.1 1.5 4.9 1.5 5.9 0 9.1-4.9 9.1-9.1v-.4c.6-.4 1.1-1 1.5-1.6z" fill="#fff"/>
+          </svg>
+        </ShareCircle>
+        {/* URL 복사 */}
+        <URLButton onClick={() => {
+          navigator.clipboard.writeText(shareUrl);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1200);
+        }}>URL</URLButton>
+      </ShareRow>
+      {copied && <CopiedMsg>URL이 복사되었습니다!</CopiedMsg>}
+    </Container>
+  );
+} 
