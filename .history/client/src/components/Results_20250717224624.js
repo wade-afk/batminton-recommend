@@ -138,7 +138,11 @@ const UserProfileContent = styled.div`
   }
 `;
 
-// Removed unused UserLabelsGrid component
+const UserLabelsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+`;
 
 const LabelItem = styled.div`
   background: white;
@@ -430,7 +434,7 @@ const SideAdContainer = styled.div`
   }
 `;
 
-// Removed unused KAKAO_IMG constant
+const KAKAO_IMG = process.env.PUBLIC_URL + '/kakao.webp';
 
 function normalize(str) {
   return str

@@ -430,7 +430,7 @@ const SideAdContainer = styled.div`
   }
 `;
 
-// Removed unused KAKAO_IMG constant
+const KAKAO_IMG = process.env.PUBLIC_URL + '/kakao.webp';
 
 function normalize(str) {
   return str
